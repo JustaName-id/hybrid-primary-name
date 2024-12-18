@@ -25,7 +25,7 @@
   ],
   "dependencies": {
     "@ensdomains/ensjs": "^4.0.2",
-    "viem": "^2.21.55"
+    "viem": "2.x"
   },
   "devDependencies": {
     "typescript": "^5.7.2"

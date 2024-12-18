@@ -1,3 +1,5 @@
+import { addEnsContracts } from "@ensdomains/ensjs";
+import { getName } from "@ensdomains/ensjs/public";
 import type { Account, Chain } from "viem";
 import {
   createPublicClient,
@@ -5,13 +7,11 @@ import {
   type PublicClient,
   type Transport,
 } from "viem";
+import { mainnet, sepolia } from "viem/chains";
 import {
   PrimaryNameGetByAddressResponse,
   ReverseResolutionParams,
 } from "./types";
-import { getName } from "@ensdomains/ensjs/public";
-import { addEnsContracts } from "@ensdomains/ensjs";
-import { mainnet, sepolia } from "viem/chains";
 
 /**
  * Extends the PublicClient with a reverseResolution method.
@@ -27,7 +27,7 @@ export function reverseResolution() {
        * Performs reverse ENS resolution.
        *
        * @param params - The parameters for reverse resolution.
-       * @returns The resolved ENS name as a string.
+       * @returns The resolved ENS name as a string or empty string if not found.
        */
       async reverseResolution({
         address,

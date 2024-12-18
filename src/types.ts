@@ -5,10 +5,6 @@ export interface ReverseResolutionParams {
   providerUrl: string;
 }
 
-export interface ReverseResolutionResult {
-  name: string;
-}
-
 export interface PrimaryNameGetByAddressResponse {
   id: string;
   name: string;
