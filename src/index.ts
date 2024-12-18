@@ -12,8 +12,10 @@ import {
 import { getName } from "@ensdomains/ensjs/public";
 import { addEnsContracts } from "@ensdomains/ensjs";
 import { mainnet, sepolia } from "viem/chains";
-import { ClientWithEns } from "@ensdomains/ensjs/dist/types/contracts/consts";
 
+/**
+ * Extends the PublicClient with a reverseResolution method.
+ */
 export function reverseResolution() {
   return function <
     TTransport extends Transport,
@@ -21,6 +23,12 @@ export function reverseResolution() {
     TAccount extends Account | undefined
   >(client: PublicClient<TTransport, TChain, TAccount>) {
     return {
+      /**
+       * Performs reverse ENS resolution.
+       *
+       * @param params - The parameters for reverse resolution.
+       * @returns The resolved ENS name as a string.
+       */
       async reverseResolution({
         address,
         providerUrl,
@@ -40,30 +48,47 @@ export function reverseResolution() {
 
         let name = "";
 
-        const url = new URL(
-          "https://api.justaname.id/ens/v1/primary-name/address"
-        );
-        url.searchParams.set("address", address);
-        url.searchParams.set("chainId", chainId.toString());
+        try {
+          const reverseResult = await getName(ensClient, {
+            address: address,
+          });
 
-        const res = await fetch(url.toString());
-        if (!res.ok) {
-          console.warn("Failed to fetch primary name from JustaName API");
-        } else {
+          if (reverseResult && reverseResult.name) {
+            name = reverseResult.name;
+            return name;
+          }
+        } catch (error) {
+          console.warn(
+            `Failed to get name using ENS: ${(error as Error).message}`
+          );
+        }
+
+        try {
+          const url = new URL(
+            "https://api.justaname.id/ens/v1/primary-name/address"
+          );
+          url.searchParams.set("address", address);
+          url.searchParams.set("chainId", chainId.toString());
+
+          const res = await fetch(url.toString());
+          if (!res.ok) {
+            console.warn(
+              "Failed to fetch primary name from API",
+              res.statusText
+            );
+            return name;
+          }
+
           const primaryNameGetByAddressResponse =
             (await res.json()) as PrimaryNameGetByAddressResponse;
+
           if (primaryNameGetByAddressResponse?.name) {
             name = primaryNameGetByAddressResponse.name;
-          } else {
-            const reverseResolution = await getName(ensClient, {
-              address: address,
-            });
-
-            if (reverseResolution && reverseResolution?.name) {
-              name = reverseResolution.name;
-            }
           }
+        } catch (error) {
+          console.warn(`Error fetching from API: ${(error as Error).message}`);
         }
+
         return name;
       },
     };
