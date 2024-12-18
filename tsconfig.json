@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "strict": true,
+    "declaration": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "resolveJsonModule": true,
+    "lib": ["es2017", "dom"]
+  },
+  "include": ["src/**/*", "node_modules/viem/**/*", "test"],
+  "exclude": ["node_modules", "**/*.spec.ts"]
+}

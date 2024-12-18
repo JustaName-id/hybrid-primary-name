@@ -1,0 +1,33 @@
+{
+  "name": "@justaname.id/hybrid-primary-name",
+  "version": "0.0.1",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "start": "ts-node src/index.ts",
+    "build": "tsc",
+    "publish": "tsc && npm publish"
+  },
+  "author": "JustaName",
+  "repository": "https://github.com/JustaName-id/hybrid-primary-name",
+  "keywords": [
+    "ethereum",
+    "address",
+    "resolution",
+    "reverse",
+    "ens",
+    "off-chain"
+  ],
+  "license": "ISC",
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@ensdomains/ensjs": "^4.0.2",
+    "viem": "^2.21.55"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.2"
+  }
+}

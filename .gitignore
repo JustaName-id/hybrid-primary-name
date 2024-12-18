@@ -1,0 +1,11 @@
+node_modules/
+
+dist/
+
+*.tgz
+
+.yarn-integrity
+
+.idea
+/.idea
+./.idea
