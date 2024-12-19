@@ -1,55 +1,33 @@
-import { addEnsContracts } from "@ensdomains/ensjs";
+import { ClientWithEns } from "@ensdomains/ensjs/dist/types/contracts/consts";
 import { getName } from "@ensdomains/ensjs/public";
-import type { Account, Chain } from "viem";
-import {
-  createPublicClient,
-  http,
-  type PublicClient,
-  type Transport,
-} from "viem";
-import { mainnet, sepolia } from "viem/chains";
-import {
-  PrimaryNameGetByAddressResponse,
-  ReverseResolutionParams,
-} from "./types";
+import { Address } from "viem";
+import { PrimaryNameGetByAddressResponse } from "./types";
 
 /**
- * Extends the PublicClient with a reverseResolution method.
+ * Extends the PublicClient with a getEnsFromAddress method.
  */
-export function reverseResolution() {
-  return function <
-    TTransport extends Transport,
-    TChain extends Chain | undefined,
-    TAccount extends Account | undefined
-  >(client: PublicClient<TTransport, TChain, TAccount>) {
+export function primaryName() {
+  return function (client: ClientWithEns) {
     return {
       /**
        * Performs reverse ENS resolution.
        *
        * @param params - The parameters for reverse resolution.
        * @returns The resolved ENS name as a string or empty string if not found.
+       * @throws Error if chain ID is not supported.
        */
-      async reverseResolution({
-        address,
-        providerUrl,
-      }: ReverseResolutionParams): Promise<string> {
-        const tempClient = createPublicClient({
-          transport: http(providerUrl),
-        });
-        const chainId = await tempClient.getChainId();
-        const baseChain = chainId === 1 ? mainnet : sepolia;
+      async getEnsFromAddress(address: Address): Promise<string> {
+        const chainId = await client.chain.id;
+        const supportedChainsIds = [1, 11155111];
 
-        const ensChain = addEnsContracts(baseChain);
-
-        const ensClient = createPublicClient({
-          chain: ensChain,
-          transport: http(providerUrl),
-        });
+        if (!supportedChainsIds.includes(chainId)) {
+          throw new Error("Chain ID not supported");
+        }
 
         let name = "";
 
         try {
-          const reverseResult = await getName(ensClient, {
+          const reverseResult = await getName(client, {
             address: address,
           });
 
@@ -79,8 +57,8 @@ export function reverseResolution() {
             return name;
           }
 
-          const primaryNameGetByAddressResponse =
-            (await res.json()) as PrimaryNameGetByAddressResponse;
+          const primaryNameGetByAddressResponse = (await res.json()).result
+            .data as PrimaryNameGetByAddressResponse;
 
           if (primaryNameGetByAddressResponse?.name) {
             name = primaryNameGetByAddressResponse.name;

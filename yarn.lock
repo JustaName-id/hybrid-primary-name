@@ -48,7 +48,7 @@
     dns-packet "^5.6.1"
     typescript-logging "^1.0.1"
 
-"@ensdomains/ensjs@^4.0.2":
+"@ensdomains/ensjs@^4.0.0":
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/@ensdomains/ensjs/-/ensjs-4.0.2.tgz#c617f1363ba4e02f1bb884f1f6cce8bcd3899500"
   integrity sha512-4vDIZEFAa1doNA3H9MppUHxflSDYYPVNyaDbdHLksTa4taq3y4dGpletX67Xea8nxI+cMfjEi4nOzLJmPzRE/g==
