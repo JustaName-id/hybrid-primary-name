@@ -35,11 +35,7 @@ export function primaryName() {
             name = reverseResult.name;
             return name;
           }
-        } catch (error) {
-          console.warn(
-            `Failed to get name using ENS: ${(error as Error).message}`
-          );
-        }
+        } catch (error) {}
 
         try {
           const url = new URL(
@@ -50,10 +46,6 @@ export function primaryName() {
 
           const res = await fetch(url.toString());
           if (!res.ok) {
-            console.warn(
-              "Failed to fetch primary name from API",
-              res.statusText
-            );
             return name;
           }
 
@@ -63,9 +55,7 @@ export function primaryName() {
           if (primaryNameGetByAddressResponse?.name) {
             name = primaryNameGetByAddressResponse.name;
           }
-        } catch (error) {
-          console.warn(`Error fetching from API: ${(error as Error).message}`);
-        }
+        } catch (error) {}
 
         return name;
       },
