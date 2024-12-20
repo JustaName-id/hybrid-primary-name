@@ -1,6 +1,6 @@
 {
   "name": "@justaname.id/hybrid-primary-name",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -26,9 +26,11 @@
   "files": [
     "dist"
   ],
-  "devDependencies": {
+  "peerDependencies": {
     "@ensdomains/ensjs": "^4.0.0",
-    "typescript": "^5.7.2",
     "viem": "^2.x"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.2"
   }
 }
