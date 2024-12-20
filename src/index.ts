@@ -39,16 +39,20 @@ export function primaryName() {
 
         try {
           const url = new URL(API_URL);
-          url.searchParams.set("address", address);
-          url.searchParams.set("chainId", chainId.toString());
+          const params = new URLSearchParams({
+            address,
+            chainId: chainId.toString(),
+          });
 
-          const res = await fetch(url.toString());
+          url.search = params.toString();
 
-          if (res.ok) {
-            const primaryNameGetByAddressResponse = (await res.json()).result
-              .data as PrimaryNameGetByAddressResponse;
-            if (primaryNameGetByAddressResponse?.name) {
-              return primaryNameGetByAddressResponse.name;
+          const response = await fetch(url);
+
+          if (response.ok) {
+            const { result } = await response.json();
+            const { name } = result.data as PrimaryNameGetByAddressResponse;
+            if (name) {
+              return name;
             }
           }
         } catch (error) {
