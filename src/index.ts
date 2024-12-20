@@ -4,22 +4,34 @@ import { Address } from "viem";
 import { mainnet, sepolia } from "viem/chains";
 import { PrimaryNameGetByAddressResponse } from "./types";
 
-// Define constants outside the function with uppercase names
 const SUPPORTED_CHAIN_IDS = [mainnet.id, sepolia.id] as number[];
 const API_URL = "https://api.justaname.id/ens/v1/primary-name/address";
 
 /**
- * Extends the PublicClient with a getEnsFromAddress method.
+ * Creates a plugin that extends the PublicClient with ENS resolution capabilities.
+ * This plugin adds the ability to perform reverse ENS lookups using both on-chain
+ * and API-based resolution methods.
+ *
+ * @returns A function that extends the client with the getEnsFromAddress method
  */
 export function primaryName() {
   return function (client: ClientWithEns) {
     return {
       /**
-       * Performs reverse ENS resolution.
+       * Performs reverse ENS resolution for a given Ethereum address.
+       * First attempts on-chain resolution, then falls back to API-based lookup.
        *
-       * @param params - The parameters for reverse resolution.
-       * @returns The resolved ENS name as a string or null if not found.
-       * @throws Error if chain ID is not supported.
+       * @param address - The Ethereum address to resolve
+       * @returns The primary ENS name associated with the address, or null if none found
+       * @throws Error if the current chain ID is not supported (must be mainnet or sepolia)
+       *
+       * @example
+       * ```typescript
+       * const ensName = await client.getEnsFromAddress('0x123...')
+       * if (ensName) {
+       *   console.log(`ENS name: ${ensName}`)
+       * }
+       * ```
        */
       async getEnsFromAddress(address: Address): Promise<string | null> {
         const chainId = await client.chain.id;
