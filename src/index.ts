@@ -13,10 +13,10 @@ export function primaryName() {
        * Performs reverse ENS resolution.
        *
        * @param params - The parameters for reverse resolution.
-       * @returns The resolved ENS name as a string or empty string if not found.
+       * @returns The resolved ENS name as a string or null if not found.
        * @throws Error if chain ID is not supported.
        */
-      async getEnsFromAddress(address: Address): Promise<string> {
+      async getEnsFromAddress(address: Address): Promise<string | null> {
         const chainId = await client.chain.id;
         const supportedChainsIds = [1, 11155111];
 
@@ -24,7 +24,7 @@ export function primaryName() {
           throw new Error("Chain ID not supported");
         }
 
-        let name = "";
+        let name: string | null = null;
 
         try {
           const reverseResult = await getName(client, {
