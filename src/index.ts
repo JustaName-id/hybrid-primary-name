@@ -4,6 +4,10 @@ import { Address } from "viem";
 import { mainnet, sepolia } from "viem/chains";
 import { PrimaryNameGetByAddressResponse } from "./types";
 
+// Define constants outside the function with uppercase names
+const SUPPORTED_CHAIN_IDS = [mainnet.id, sepolia.id] as number[];
+const API_URL = "https://api.justaname.id/ens/v1/primary-name/address";
+
 /**
  * Extends the PublicClient with a getEnsFromAddress method.
  */
@@ -19,9 +23,8 @@ export function primaryName() {
        */
       async getEnsFromAddress(address: Address): Promise<string | null> {
         const chainId = await client.chain.id;
-        const supportedChainsIds = [mainnet.id, sepolia.id] as number[];
 
-        if (!supportedChainsIds.includes(chainId)) {
+        if (!SUPPORTED_CHAIN_IDS.includes(chainId)) {
           throw new Error("Chain ID not supported");
         }
 
@@ -35,9 +38,7 @@ export function primaryName() {
         }
 
         try {
-          const url = new URL(
-            "https://api.justaname.id/ens/v1/primary-name/address"
-          );
+          const url = new URL(API_URL);
           url.searchParams.set("address", address);
           url.searchParams.set("chainId", chainId.toString());
 
