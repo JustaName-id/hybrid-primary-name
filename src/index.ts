@@ -61,7 +61,7 @@ export function primaryName() {
           const response = await fetch(url);
 
           if (response.ok) {
-            const { result } = await response.json();
+            const { result } = await response.json(); // TODO: Add proper type
             const { name } = result.data as PrimaryNameGetByAddressResponse;
             if (name) {
               return name;
