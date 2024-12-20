@@ -25,18 +25,14 @@ export function primaryName() {
           throw new Error("Chain ID not supported");
         }
 
-        let name: string | null = null;
-
         try {
-          const reverseResult = await getName(client, {
-            address: address,
-          });
-
-          if (reverseResult && reverseResult.name) {
-            name = reverseResult.name;
-            return name;
+          const reverseResult = await getName(client, { address });
+          if (reverseResult?.name) {
+            return reverseResult.name;
           }
-        } catch (error) {}
+        } catch (error) {
+          // Handle error if necessary
+        }
 
         try {
           const url = new URL(
@@ -46,19 +42,19 @@ export function primaryName() {
           url.searchParams.set("chainId", chainId.toString());
 
           const res = await fetch(url.toString());
-          if (!res.ok) {
-            return name;
+
+          if (res.ok) {
+            const primaryNameGetByAddressResponse = (await res.json()).result
+              .data as PrimaryNameGetByAddressResponse;
+            if (primaryNameGetByAddressResponse?.name) {
+              return primaryNameGetByAddressResponse.name;
+            }
           }
+        } catch (error) {
+          // Handle error if necessary
+        }
 
-          const primaryNameGetByAddressResponse = (await res.json()).result
-            .data as PrimaryNameGetByAddressResponse;
-
-          if (primaryNameGetByAddressResponse?.name) {
-            name = primaryNameGetByAddressResponse.name;
-          }
-        } catch (error) {}
-
-        return name;
+        return null;
       },
     };
   };
