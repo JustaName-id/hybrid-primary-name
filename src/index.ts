@@ -1,6 +1,7 @@
 import { ClientWithEns } from "@ensdomains/ensjs/dist/types/contracts/consts";
 import { getName } from "@ensdomains/ensjs/public";
 import { Address } from "viem";
+import { mainnet, sepolia } from "viem/chains";
 import { PrimaryNameGetByAddressResponse } from "./types";
 
 /**
@@ -18,7 +19,7 @@ export function primaryName() {
        */
       async getEnsFromAddress(address: Address): Promise<string | null> {
         const chainId = await client.chain.id;
-        const supportedChainsIds = [1, 11155111];
+        const supportedChainsIds = [mainnet.id, sepolia.id] as number[];
 
         if (!supportedChainsIds.includes(chainId)) {
           throw new Error("Chain ID not supported");
