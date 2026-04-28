@@ -1,3 +1,11 @@
+# ⚠️ DEPRECATED — 2026-04-28
+
+> **This package is no longer maintained.** It will not receive updates,
+> bug fixes, or security patches. The repository has been archived.
+> Please do not use this package in new projects.
+
+---
+
 # Hybrid Primary Name
 
 **Hybrid Primary Name** is a Viem extension package that enables reverse ENS resolution to fetch the primary ENS name associated with a given Ethereum address. It integrates seamlessly with both Viem's `createPublicClient` and ENS's `createEnsPublicClient`.

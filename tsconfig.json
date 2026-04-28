@@ -12,6 +12,6 @@
     "resolveJsonModule": true,
     "lib": ["es2017", "dom"]
   },
-  "include": ["src/**/*", "node_modules/viem/**/*", "test"],
+  "include": ["src/**/*"],
   "exclude": ["node_modules", "**/*.spec.ts"]
 }

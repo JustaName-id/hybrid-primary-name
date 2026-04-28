@@ -1,7 +1,8 @@
 {
   "name": "@justaname.id/hybrid-primary-name",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "",
+  "deprecated": "This package is no longer maintained and will not receive updates or security fixes. Do not use in new projects.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
